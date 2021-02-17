@@ -123,3 +123,55 @@ example) package dependency information. We'll see.
 At present, we are focusing primarily on static library sharing. We may expand
 definitions and expectations (e.g., folder artifacts and build script examples)
 to include dynamic libraries in the near future.
+
+Dependencies
+------------
+
+What does it mean for a C/C++ project to "depend" on another, anyways? It
+depends. But even across different build tools (MSVC; GCC; LLVM), there are
+enough similarities to make a few key observations:
+
+For static dependencies:
+
+* Check out project from verified URL
+
+* Ensure matching versions against dependency declaration
+
+* Add header path to include directories
+
+* Add static library (building if necessary) as linker input
+
+* Ensure mapping configurations (architecture, etc.)
+
+* May need to "inherit" related configurations (source includes, etc.) recursively from dependencies
+
+For dynamic dependencies:
+
+* Check out artifacts from verified URL
+
+* Ensure matching versions against dependency declaration
+
+* Expose symbol export headers during build process
+
+* Ensure mapping configurations (architecture, etc.)
+
+* Copy dynamic libraries to runtime location
+
+Some observations on the above, based on what we can "assume" using this
+(Basque) project template now:
+
+* We can define a single "local repository" path, perhaps via environmental
+  variable, where projects are "checked out" and we can reasonable expect to
+  resolve #include directories.
+
+* Referencing static library directories is easy now, too, using a similar
+  assumption.
+
+* We'd greatly benefit from making a one-directory, one-package assumption,
+  where that package directory is managed by version control (especially for
+  things like asserting versions via tags).
+
+Does that mean it's "worth" forcing common libraries (SDL2, etc.) into
+Basque-like folder structures? Not really. Maybe there's an intermediate level
+at which "shallow" references are linked across folder structures. Most likely,
+I'll just adapt specific snapshots of packages I use and update as needed.
